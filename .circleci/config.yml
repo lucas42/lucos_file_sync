@@ -3,6 +3,7 @@ jobs:
   build:
     environment:
       COMPOSE_PROJECT_NAME: lucos_file_sync
+      ARCH: amd64
     docker:
       - image: circleci/buildpack-deps:buster
     steps:
