@@ -82,7 +82,7 @@ workflows:
           context: docker
           build-domain: xwing.s.l42.eu
           ssh-port: 2222
-          architecture: armv7l
+          architecture: arm
 #      - deploy:
 #          context: docker
 #          host-domain: valen.s.l42.eu
