@@ -5,4 +5,4 @@ services:
       container_name: file_sync_agent
       ports: 
         - "8018:8018"
-      image: lucas42/lucos_file_sync_agent:${ARCH:-latest}
+      image: lucas42/lucos_file_sync_agent:${ARCH}-latest
