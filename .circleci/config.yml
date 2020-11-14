@@ -52,6 +52,8 @@ jobs:
     parameters:
       host-domain:
         type: string
+      architecture:
+        type: string
     environment:
       COMPOSE_PROJECT_NAME: lucos_file_sync
       PRODUCTION: true
@@ -90,6 +92,7 @@ workflows:
       - deploy:
           context: docker
           host-domain: valen.s.l42.eu
+          architecture: amd64
           requires:
             - build
           filters:
@@ -99,6 +102,7 @@ workflows:
       - deploy:
           context: docker
           host-domain: xwing.s.l42.eu
+          architecture: arm
           requires:
             - remote-build
           filters:
