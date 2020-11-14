@@ -83,21 +83,21 @@ workflows:
           build-domain: xwing.s.l42.eu
           ssh-port: 2222
           architecture: arm
-#      - deploy:
-#          context: docker
-#          host-domain: valen.s.l42.eu
-#          requires:
-#            - build
-#          filters:
-#            branches:
-#              only:
-#                - main
-#      - deploy:
-#          context: docker
-#          host-domain: xwing.s.l42.eu
-#          requires:
-#            - remote-build
-#          filters:
-#            branches:
-#              only:
-#                - main
+     - deploy:
+         context: docker
+         host-domain: valen.s.l42.eu
+         requires:
+           - build
+         filters:
+           branches:
+             only:
+               - main
+     - deploy:
+         context: docker
+         host-domain: xwing.s.l42.eu
+         requires:
+           - remote-build
+         filters:
+           branches:
+             only:
+               - main
