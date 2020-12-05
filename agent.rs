@@ -57,7 +57,7 @@ fn parse_request(mut stream: &TcpStream) -> (String, String, HashMap<String, Str
 					1 => println!("Ignoring invalid header \"{}\" (Length: {}).", header_line.to_string(), header_line.len()),
 
 					// A key plus value is what we expect, save to header hashmap
-					2 => drop(headers.insert(kv[0].to_string(), kv[1].to_string())),
+					2 => drop(headers.insert(kv[0].to_string().to_lowercase(), kv[1].to_string())),
 
 					// Any other number means we've messed up somehow
 					_ => panic!("splitn returned too many values"),
@@ -146,6 +146,6 @@ fn handle_connection(stream: TcpStream) {
 		_ => send_not_found(),
 	};
 	let response_length = send_response(stream, response_code, content_type, response_body);
-	println!("{} {} \"{}\" {} {}", method, path, headers["User-Agent"], response_code, response_length);
+	println!("{} {} \"{}\" {} {}", method, path, headers["user-agent"], response_code, response_length);
 
 }
