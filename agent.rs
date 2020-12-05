@@ -95,20 +95,57 @@ fn parse_request(mut stream: &TcpStream) -> (String, String, HashMap<String, Str
 	let body = body_lines.join("\n");
 	return (method, path, headers, body);
 }
-
-fn send_response(mut stream: TcpStream) {
-	let response = "HTTP/1.1 200 OK
-Content-Type: text/html; charset=UTF-8
-
-<html><body>Hello world</body></html>
+fn send_info() -> (u16, String, String) {
+	let body = "{
+	\"system\": \"lucos_file_sync\",
+	\"metrics\": {},
+	\"ci\": {
+		\"circle\": \"gh/lucas42/lucos_file_sync\"
+	},
+	\"checks\": {}
+}
 ";
-	stream.write(response.as_bytes()).expect("Failed sending response");
-	println!("Response sent");
+	return (200, "application/json".to_string(), body.to_string());
 }
 
+fn send_homepage() -> (u16, String, String) {
+	let body = "<head><title>Lucos File Sync</title></head>
+	<body>
+		<h1>File Sync Homepage</h1>
+		<p>Work in progress...</p>
+	</body>
+</html>
+";
+	return (200, "text/html; charset=UTF-8".to_string(), body.to_string());
+}
+
+fn send_not_found() -> (u16, String, String) {
+	let body = "<html>
+	<head><title>File Not Found</title></head>
+	<body><h1>Can't find file</h1></body>
+</html>
+";
+	return (404, "text/html; charset=UTF-8".to_string(), body.to_string());
+}
+fn send_response(mut stream: TcpStream, response_code: u16, content_type: String, body: String) -> usize {
+	let response = format!("HTTP/1.1 {} OK
+Content-Type: {}
+Content-Length: {}
+
+{}
+", response_code, content_type, body.len(), body);
+	stream.write(response.as_bytes()).expect("Failed sending response");
+	return body.len();
+}
 
 fn handle_connection(stream: TcpStream) {
-	let (method, path, headers, _) = parse_request(&stream);
-	println!("Request: {}, {}, {}", method, path, headers["User-Agent"]);
-	send_response(stream);
+	let (method, path, headers, _request_body) = parse_request(&stream);
+	let (response_code, content_type, response_body) = match path.as_str() {
+		"/" => send_homepage(),
+		"/_info" => send_info(),
+		_ => send_not_found(),
+	};
+	let response_length = send_response(stream, response_code, content_type, response_body);
+	println!("{} {} \"{}\" {} {}", method, path, headers["User-Agent"], response_code, response_length);
+
 }
