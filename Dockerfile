@@ -9,6 +9,7 @@ FROM debian:buster
 WORKDIR /root/
 COPY --from=builder /usr/src/file_sync_agent/agent /usr/local/bin/file_sync_agent
 
+ENV PORT 8018
 EXPOSE $PORT
 
 CMD ["/usr/local/bin/file_sync_agent"]

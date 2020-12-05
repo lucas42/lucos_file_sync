@@ -3,8 +3,6 @@ services:
     agent:
       build: .
       container_name: file_sync_agent
-      environment:
-        PORT: "8018"
       ports: 
         - "8018:8018"
       image: lucas42/lucos_file_sync_agent:${ARCH}-latest
