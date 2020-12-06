@@ -5,7 +5,6 @@ jobs:
       architecture:
         type: string
     environment:
-      COMPOSE_PROJECT_NAME: lucos_file_sync
       ARCH: << parameters.architecture >>
     docker:
       - image: circleci/buildpack-deps:buster
@@ -29,7 +28,6 @@ jobs:
       architecture:
         type: string
     environment:
-      COMPOSE_PROJECT_NAME: lucos_router
       BUILD_DOMAIN: << parameters.build-domain >>
       SSH_PORT: << parameters.ssh-port >>
       ARCH: << parameters.architecture >>
@@ -55,7 +53,6 @@ jobs:
       architecture:
         type: string
     environment:
-      COMPOSE_PROJECT_NAME: lucos_file_sync
       PRODUCTION: true
       HOSTDOMAIN: << parameters.host-domain >>
       ARCH: << parameters.architecture >>
