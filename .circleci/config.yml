@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  deploy: lucos/deploy@0.0.0
+  deploy: lucos/deploy@alpha
 jobs:
   build:
     parameters:
@@ -35,11 +35,7 @@ workflows:
           build-domain: xwing.s.l42.eu
           ssh-port: 2222
           architecture: arm
-      - deploy/deploy:
-          name: deploy-server
-          context: docker
-          host-domain: valen.s.l42.eu
-          architecture: amd64
+      - deploy/deploy-valen:
           requires:
             - amd64-build
           filters:
