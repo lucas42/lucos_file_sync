@@ -26,29 +26,33 @@ workflows:
   build-deploy:
     jobs:
       - build:
+          name: amd64-build
           context: docker
           architecture: amd64
       - deploy/remote-build:
+          name: arm-build
           context: docker
           build-domain: xwing.s.l42.eu
           ssh-port: 2222
           architecture: arm
       - deploy/deploy:
+          name: deploy-server
           context: docker
           host-domain: valen.s.l42.eu
           architecture: amd64
           requires:
-            - build
+            - amd64-build
           filters:
             branches:
               only:
                 - main
       - deploy/deploy:
+          name: deploy-pi
           context: docker
           host-domain: xwing.s.l42.eu
           architecture: arm
           requires:
-            - deploy/remote-build
+            - arm-build
           filters:
             branches:
               only:
