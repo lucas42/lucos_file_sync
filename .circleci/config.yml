@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  lucos: lucos/deploy@dev:alpha
+  lucos: lucos/deploy@0
 workflows:
   version: 2
   build-deploy:
