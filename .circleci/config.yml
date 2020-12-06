@@ -36,6 +36,7 @@ workflows:
           ssh-port: 2222
           architecture: arm
       - deploy/deploy-valen:
+          context: docker
           requires:
             - amd64-build
           filters:
