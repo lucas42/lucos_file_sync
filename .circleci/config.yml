@@ -1,55 +1,26 @@
 version: 2.1
 orbs:
-  deploy: lucos/deploy@dev:alpha
-jobs:
-  build:
-    parameters:
-      architecture:
-        type: string
-    environment:
-      ARCH: << parameters.architecture >>
-    docker:
-      - image: circleci/buildpack-deps:buster
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Build Docker image
-          command: docker-compose build
-      - run:
-          name: Publish Docker Image to Docker Hub
-          command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-            docker-compose push
+  lucos: lucos/deploy@dev:alpha
 workflows:
   version: 2
   build-deploy:
     jobs:
-      - build:
-          name: amd64-build
+      - lucos/build-amd64:
           context: docker
-          architecture: amd64
-      - deploy/remote-build:
-          name: arm-build
+      - lucos/build-arm:
           context: docker
-          build-domain: xwing.s.l42.eu
-          ssh-port: 2222
-          architecture: arm
-      - deploy/deploy-valen:
+      - lucos/deploy-valen:
           context: docker
           requires:
-            - amd64-build
+            - lucos/build-amd64
           filters:
             branches:
               only:
                 - main
-      - deploy/deploy:
-          name: deploy-pi
+      - lucos/deploy-xwing:
           context: docker
-          host-domain: xwing.s.l42.eu
-          architecture: arm
           requires:
-            - arm-build
+            - lucos/build-arm
           filters:
             branches:
               only:
