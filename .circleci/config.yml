@@ -48,7 +48,7 @@ workflows:
           host-domain: xwing.s.l42.eu
           architecture: arm
           requires:
-            - remote-build
+            - deploy/remote-build
           filters:
             branches:
               only:
