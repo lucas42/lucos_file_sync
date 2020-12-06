@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  deploy: lucos/deploy@alpha
+  deploy: lucos/deploy@dev:alpha
 jobs:
   build:
     parameters:
