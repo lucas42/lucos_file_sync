@@ -1,26 +1,29 @@
 use std::fs;
-use std::path::Path;
+use std::time::UNIX_EPOCH;
 
 pub fn scan() {
-	get_files("/mnt/documents")
+	get_files("documents", "");
 }
-fn get_files<P>(dir_path: P) 
-where
-    P: AsRef<Path> {
+fn get_files(namespace: &str, rel_dir: &str) {
+	let full_path = format!("/mnt/{}/{}", namespace, rel_dir);
+	let files = fs::read_dir(&full_path).unwrap().filter_map(Result::ok);
 
-    let files = fs::read_dir(dir_path).unwrap().filter_map(Result::ok);
-
-    for file in files {
-    	if file.file_name().into_string().unwrap().starts_with(".") {
-    		continue;
-    	}
-    	let file_metadata = file.metadata().unwrap();
-    	if file_metadata.is_dir() {
-    		get_files(file.path());
-    	}
-    	if file_metadata.is_file() {
-    		println!("File: {}", file.path().display());
-    	}
-        
-    }
+	for file in files {
+		let file_name = file.file_name().into_string().unwrap();
+		if file_name.starts_with(".") {
+			continue;
+		}
+		let rel_path = match rel_dir {
+			"" => file_name,
+			_ => format!("{}/{}", rel_dir, file_name)
+		};
+		let file_metadata = file.metadata().unwrap();
+		if file_metadata.is_dir() {
+			get_files(namespace, &rel_path);
+		}
+		let modified = file_metadata.modified().unwrap().duration_since(UNIX_EPOCH).unwrap().as_secs();
+		if file_metadata.is_file() {
+			println!("{}: {}, {}", namespace, rel_path, modified);
+		}
+	}
 }
