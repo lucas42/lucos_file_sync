@@ -5,4 +5,14 @@ services:
       container_name: file_sync_agent
       ports: 
         - "8018:8018"
+      volumes:
+        - "documents-read:/mnt/documents"
       image: lucas42/lucos_file_sync_agent:${ARCH}-latest
+
+volumes:
+  documents-read:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=aurora,ro,hard,intr,nfsvers=4"
+      device: ":/documents"
