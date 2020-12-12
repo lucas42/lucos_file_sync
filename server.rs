@@ -4,7 +4,7 @@ use std::io::{Read, Write};
 use std::thread;
 use std::collections::HashMap;
 
-fn main() {
+pub fn start() {
 	let port = env::var("PORT").expect("Environment Varible PORT must be set")
 		.parse::<u16>().expect("Environment Varible PORT must be an integer");
 
