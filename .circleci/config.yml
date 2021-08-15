@@ -9,7 +9,7 @@ workflows:
           context: docker
       - lucos/build-arm:
           context: docker
-      # - lucos/deploy-valen:
+      # - lucos/deploy-avalon:
       #     context: docker
       #     requires:
       #       - lucos/build-amd64
