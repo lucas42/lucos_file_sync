@@ -8,6 +8,7 @@ services:
       volumes:
         - "documents-read:/mnt/documents"
       image: lucas42/lucos_file_sync_agent:${ARCH}-latest
+      restart: always
 
 volumes:
   documents-read:
