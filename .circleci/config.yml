@@ -6,7 +6,7 @@ workflows:
   build-deploy:
     jobs:
       - lucos/build-amd64
-      - lucos/build-arm:
+      - lucos/build-arm
       # - lucos/deploy-avalon:
       #     requires:
       #       - lucos/build-amd64
