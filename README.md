@@ -13,3 +13,6 @@ Syncs files between locations for resilience
 
 ## Running
 `ARCH={architecture} nice -19 docker-compose up -d --no-build`
+
+## Deprecated
+This project only ever got as far as a stub.  Useful logic wasn't implemented.  So no point running it at the moment.  May pick it up in future (or may take a different approach instead)
